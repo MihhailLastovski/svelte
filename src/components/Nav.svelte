@@ -1,4 +1,6 @@
 <script>
+	import register from "../routes/register.svelte";
+
 	export let segment;
 </script>
 
@@ -50,6 +52,6 @@
 
 <nav>
 	<ul>
-		<li><a aria-current="{segment === 'Register' ? 'page' : undefined}" href="Register">Register</a></li>
+		<li><a aria-current="{segment === 'Register' ? 'page' : undefined}" href="register">Register</a></li>
 	</ul>
 </nav>
