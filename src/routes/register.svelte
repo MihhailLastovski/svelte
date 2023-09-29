@@ -6,18 +6,14 @@
 	const { session } = stores();
 
 	let username = '';
-	let email = '';
+	let name = '';
 	let password = '';
 	let error = null;
 
 	async function submit(event) {
-		const response = await post(`auth/register`, { username, email, password });
-
-		// TODO handle network errors
+		const response = await post(`auth/register`, { username,name, password });
 		error = response.error;
-
-		if (response.user) {
-			$session.user = response.user;
+		if (response.id) {
 			goto('/');
 		}
 	}
@@ -36,19 +32,21 @@
 					<a href="/login">Have an account?</a>
 				</p>
 
-				{error}
-
+				{#if error}
+					<div class="alert alert-danger" role="alert">{error}</div>
+				{/if}
 				<form on:submit|preventDefault={submit}>
 					<fieldset class="form-group">
 						<input class="form-control form-control-lg" type="text" required placeholder="Your Name" bind:value={username}>
 					</fieldset>
 					<fieldset class="form-group">
-						<input class="form-control form-control-lg" type="email" required placeholder="Email" bind:value={email}>
+						<input class="form-control form-control-lg" type="name" required placeholder="Name" bind:value={name}>
 					</fieldset>
 					<fieldset class="form-group">
 						<input class="form-control form-control-lg" type="password" required placeholder="Password" bind:value={password}>
+						{#if password.length > 1 && password.length < 6}<sup><div class="alert alert-danger">Password too short</div></sup>{/if}
 					</fieldset>
-					<button class="btn btn-lg btn-primary pull-xs-right">
+					<button class="btn btn-lg btn-primary pull-xs-right" disabled="{password.length < 6}">
 						Sign up
 					</button>
 				</form>
