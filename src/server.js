@@ -6,17 +6,17 @@ import session from 'express-session';
 import sessionFileStore from 'session-file-store';
 
 const FileStore = sessionFileStore(session);
+const { json } = require('body-parser');
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
-const { json } = require('body-parser');
+
 polka()
-	// You can also use Express
 	.use(
 		compression({ threshold: 0 }),
 		json(),
 		sirv('static', { dev }),
 		session({
-			secret: 'conduit',
+			secret: 'shops',
 			resave: false,
 			saveUninitialized: true,
 			cookie: {
@@ -36,4 +36,3 @@ polka()
 	.listen(PORT, err => {
 		if (err) console.log('error', err);
 	});
-

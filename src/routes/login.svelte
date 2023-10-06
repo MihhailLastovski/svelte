@@ -1,27 +1,23 @@
-<!--<script context="module">
-    export async function preload({ params }, { token }) {
-        if (token) {
+<script context="module">
+    export async function preload({ params }, { user }) {
+        if (user) {
             this.redirect(302, `/`);
         }
     }
-</script>-->
-
+</script>
 <script>
     import { goto, stores } from '@sapper/app';
-    import ListErrors from '../components/ListErrors.svelte';
     import { post } from 'utils.js';
 
     const { session } = stores();
-
     let username = '';
     let password = '';
     let error = null;
 
     async function submit(event) {
         const response = await post(`auth/login`, { username, password });
-
         error = response.error;
-
+        console.log(response);
         if (response.token) {
             $session.token = response.token;
             goto('/');
@@ -30,7 +26,7 @@
 </script>
 
 <svelte:head>
-    <title>Sign in • Conduit</title>
+    <title>Sign in • Shop</title>
 </svelte:head>
 
 <div class="auth-page">
@@ -41,19 +37,16 @@
                 <p class="text-xs-center">
                     <a href="/register">Need an account?</a>
                 </p>
-                {#if error}
-                    <div class="alert alert-danger" role="alert">{error}</div>
-                {/if}
+
+                {#if error}<div class="alert alert-danger" role="alert">{error}</div>{/if}
                 <form on:submit|preventDefault={submit}>
                     <fieldset class="form-group">
-                        <input class="form-control form-control-lg" type="username" required placeholder="text" bind:value={username}>
-                    </fieldset>
+                        <input class="form-control form-control-lg" type="text" required placeholder="Username" bind:value={username}>
+                    </fieldset><br/>
                     <fieldset class="form-group">
                         <input class="form-control form-control-lg" type="password" required placeholder="Password" bind:value={password}>
-                    </fieldset>
-                    <button class="btn btn-lg btn-primary pull-xs-right" type="submit">
-                        Sign in
-                    </button>
+                    </fieldset><br/>
+                    <button class="btn btn-lg btn-primary pull-xs-right" type="submit">Sign in</button>
                 </form>
             </div>
         </div>
